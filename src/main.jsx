@@ -136,9 +136,10 @@ function RevealPortrait() {
 
   function updateReveal(event) {
     const bounds = event.currentTarget.getBoundingClientRect();
+    const point = event.touches?.[0] || event;
     const next = {
-      x: ((event.clientX - bounds.left) / bounds.width) * 100,
-      y: ((event.clientY - bounds.top) / bounds.height) * 100,
+      x: ((point.clientX - bounds.left) / bounds.width) * 100,
+      y: ((point.clientY - bounds.top) / bounds.height) * 100,
     };
 
     targetRef.current = next;
@@ -152,17 +153,18 @@ function RevealPortrait() {
       const id = dropIdRef.current;
       const wave = Math.sin(id * 1.37);
       const drift = Math.cos(id * 0.91);
+      const touchLike = window.matchMedia('(hover: none)').matches;
 
       dropsRef.current.push({
         x: next.x + wave * 0.9,
         y: next.y + drift * 0.6,
         life: 1,
-        rx: 78 + wave * 20,
-        ry: 92 + drift * 22,
+        rx: touchLike ? 34 + wave * 7 : 78 + wave * 20,
+        ry: touchLike ? 48 + drift * 9 : 92 + drift * 22,
         decay: 0.010 + (id % 4) * 0.0016,
       });
 
-      dropsRef.current = dropsRef.current.slice(-30);
+      dropsRef.current = dropsRef.current.slice(touchLike ? -16 : -30);
       lastDropRef.current = next;
       dropIdRef.current += 1;
     }
@@ -174,10 +176,17 @@ function RevealPortrait() {
     event.currentTarget.classList.remove('is-revealing');
   }
 
+  function startTouchReveal(event) {
+    isActiveRef.current = true;
+    event.currentTarget.classList.add('is-revealing');
+    updateReveal(event);
+  }
+
   return (
     <div
       ref={portraitRef}
       className="reveal-portrait"
+      onContextMenu={(event) => event.preventDefault()}
       onPointerEnter={(event) => {
         if (window.matchMedia('(hover: none)').matches) return;
 
@@ -195,6 +204,13 @@ function RevealPortrait() {
       onPointerUp={resetReveal}
       onPointerCancel={resetReveal}
       onPointerLeave={resetReveal}
+      onTouchStart={startTouchReveal}
+      onTouchMove={(event) => {
+        event.preventDefault();
+        updateReveal(event);
+      }}
+      onTouchEnd={resetReveal}
+      onTouchCancel={resetReveal}
     >
       <img className="portrait-base" src={profilePhoto} alt="Foto de perfil" />
       <img ref={maskRef} className="portrait-mask" src={maskPhoto} alt="" aria-hidden="true" />

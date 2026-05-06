@@ -372,6 +372,9 @@ h1 {
   box-shadow: 0 26px 74px rgba(0, 0, 0, 0.32);
   cursor: none;
   touch-action: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
 }
 
 .portrait-base,
@@ -381,6 +384,9 @@ h1 {
   inset: 0;
   width: 100%;
   height: 100%;
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
 }
 
 .portrait-base,
@@ -871,6 +877,15 @@ h1 {
 
   .portrait-mask {
     opacity: 0;
+  }
+
+  .reveal-portrait.is-revealing .portrait-mask {
+    opacity: 0.92;
+  }
+
+  .reveal-portrait.is-revealing .reveal-liquid,
+  .reveal-portrait.is-revealing .reveal-ring {
+    opacity: 0.14;
   }
 
   .reveal-ring {
