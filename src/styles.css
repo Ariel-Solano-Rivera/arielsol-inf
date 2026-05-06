@@ -164,8 +164,10 @@ a {
 .hero-stage {
   position: relative;
   display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(280px, 430px);
+  gap: clamp(24px, 6vw, 78px);
   min-height: calc(100vh - 44px);
-  place-items: center;
+  align-items: center;
   padding: 82px 0 64px;
   animation: reveal 750ms 80ms both;
 }
@@ -192,6 +194,20 @@ a {
   text-transform: uppercase;
 }
 
+.hero-intro {
+  justify-self: start;
+  max-width: 560px;
+}
+
+.hero-kicker {
+  margin: 0 0 12px;
+  color: var(--cyan);
+  font-size: clamp(0.78rem, 1.1vw, 0.92rem);
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
 h1,
 h2,
 p {
@@ -202,10 +218,29 @@ h1 {
   max-width: 660px;
   margin-bottom: 12px;
   color: #f8fafc;
-  font-size: clamp(3.8rem, 10vw, 7.8rem);
+  font-size: clamp(4.2rem, 8.5vw, 8.6rem);
   font-weight: 800;
   letter-spacing: -0.08em;
   line-height: 0.86;
+}
+
+.hero-intro h1 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 800;
+  letter-spacing: -0.055em;
+  line-height: 0.82;
+}
+
+.hero-signature {
+  display: block;
+  width: fit-content;
+  margin-top: 18px;
+  color: #f472b6;
+  font-family: Allura, "Brush Script MT", cursive;
+  font-size: clamp(2.8rem, 6vw, 5.4rem);
+  line-height: 0.9;
+  text-shadow: 0 0 28px rgba(244, 114, 182, 0.22);
+  transform: rotate(-4deg);
 }
 
 .quick-links {
@@ -294,6 +329,7 @@ h1 {
   --reveal-y: 44%;
   position: relative;
   width: min(430px, 62vw);
+  justify-self: end;
   aspect-ratio: 4 / 5;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.12);
@@ -658,12 +694,25 @@ h1 {
   }
 
   .hero-stage {
+    grid-template-columns: 1fr;
     min-height: calc(100vh - 36px);
+    gap: 20px;
     padding: 76px 0 58px;
+    text-align: center;
+  }
+
+  .hero-intro {
+    justify-self: center;
+  }
+
+  .hero-signature {
+    margin-right: auto;
+    margin-left: auto;
   }
 
   .reveal-portrait {
     width: min(360px, 74vw);
+    justify-self: center;
   }
 
   .quick-links {
@@ -727,11 +776,22 @@ h1 {
 
   .hero-stage {
     min-height: calc(100vh - 24px);
-    padding: 72px 0 52px;
+    gap: 14px;
+    padding: 74px 0 52px;
   }
 
   h1 {
-    font-size: clamp(3.2rem, 18vw, 4.4rem);
+    font-size: clamp(3.2rem, 16vw, 4.8rem);
+  }
+
+  .hero-kicker {
+    margin-bottom: 8px;
+    font-size: 0.68rem;
+  }
+
+  .hero-signature {
+    margin-top: 10px;
+    font-size: clamp(2.2rem, 12vw, 3.6rem);
   }
 
   .top-socials {
@@ -771,15 +831,16 @@ h1 {
   .reveal-portrait {
     --reveal-x: 58%;
     --reveal-y: 42%;
-    width: min(250px, 72vw);
+    width: min(285px, 78vw);
     margin: -2px auto 0;
     cursor: default;
   }
 
   .portrait-mask {
     opacity: 1;
-    mask-image: radial-gradient(ellipse 110px 145px at var(--reveal-x) var(--reveal-y), #000 0 72px, rgba(0,0,0,.55) 104px, transparent 150px);
-    -webkit-mask-image: radial-gradient(ellipse 110px 145px at var(--reveal-x) var(--reveal-y), #000 0 72px, rgba(0,0,0,.55) 104px, transparent 150px);
+    animation: mobile-mask-flow 4.8s ease-in-out infinite;
+    mask-image: radial-gradient(ellipse 118px 152px at var(--reveal-x) var(--reveal-y), #000 0 74px, rgba(0,0,0,.6) 108px, transparent 154px);
+    -webkit-mask-image: radial-gradient(ellipse 118px 152px at var(--reveal-x) var(--reveal-y), #000 0 74px, rgba(0,0,0,.6) 108px, transparent 154px);
   }
 
   .reveal-ring {
@@ -790,5 +851,16 @@ h1 {
   .spotify-frame iframe {
     min-height: 340px;
     height: 340px;
+  }
+}
+
+@keyframes mobile-mask-flow {
+  0%,
+  100% {
+    clip-path: inset(0);
+    transform: scale(1.018);
+  }
+  50% {
+    transform: scale(1.035);
   }
 }

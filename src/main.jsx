@@ -90,6 +90,15 @@ function RevealPortrait() {
       const portrait = portraitRef.current;
       const mask = maskRef.current;
       const trail = trailRef.current;
+      const isTouchLike = window.matchMedia('(hover: none)').matches;
+
+      if (isTouchLike && !isActiveRef.current) {
+        const time = performance.now() / 1000;
+        targetRef.current = {
+          x: 55 + Math.sin(time * 0.75) * 10,
+          y: 42 + Math.cos(time * 0.62) * 7,
+        };
+      }
 
       if (portrait) {
         currentRef.current.x += (targetRef.current.x - currentRef.current.x) * 0.16;
@@ -182,7 +191,14 @@ function RevealPortrait() {
         event.currentTarget.classList.add('is-revealing');
         updateReveal(event);
       }}
+      onPointerDown={(event) => {
+        isActiveRef.current = true;
+        event.currentTarget.classList.add('is-revealing');
+        updateReveal(event);
+      }}
       onPointerMove={updateReveal}
+      onPointerUp={resetReveal}
+      onPointerCancel={resetReveal}
       onPointerLeave={resetReveal}
     >
       <img className="portrait-base" src={profilePhoto} alt="Foto de perfil" />
@@ -212,6 +228,11 @@ function App() {
 
       <section className="hero snap-section" id="inicio">
         <div className="hero-stage">
+          <div className="hero-intro">
+            <p className="hero-kicker">Personal social hub</p>
+            <h1>Ariel Solano</h1>
+            <span className="hero-signature">A. Solano</span>
+          </div>
           <RevealPortrait />
           <a className="scroll-cue" href="#redes-principales">
             Ver redes
