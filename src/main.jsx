@@ -7,45 +7,41 @@ const socialLinks = [
     name: 'Instagram',
     handle: '@arielsol_30',
     href: 'https://www.instagram.com/arielsol_30/?hl=es-la',
-    accent: '#ff7ab6',
+    accent: '#e1306c',
     icon: 'IG',
   },
   {
+    name: 'Vsco',
+    handle: '@arielus30-',
+    href: 'https://vsco.co/arielus30-/gallery',
+    accent: '#64748b',
+    icon: 'VS',
+  },
+  {
     name: 'TikTok',
-    handle: '@tu_usuario',
-    href: 'https://tiktok.com/@tu_usuario',
-    accent: '#c77dff',
+    handle: '@ariel.sol_30',
+    href: 'https://www.tiktok.com/@ariel.sol_30',
+    accent: '#06b6d4',
     icon: 'TK',
   },
   {
-    name: 'YouTube',
-    handle: 'Tu canal',
-    href: 'https://youtube.com/@tu_usuario',
-    accent: '#ff9f80',
-    icon: 'YT',
+    name: 'Spotify',
+    handle: 'Arielus',
+    href: 'https://open.spotify.com/user/ovt164auivhpmodedjyqz45hu?si=8000666dbf894408',
+    accent: '#22c55e',
+    icon: 'SP',
   },
-  {
-    name: 'Vsco',
-    handle: '@tu_usuario',
-    href: 'https://x.com/tu_usuario',
-    accent: '#f7c8e0',
-    icon: 'VC',
-  },
-];
-
-const favoriteTracks = [
-  'Track para arrancar el mood',
-  'Cancion favorita de la semana',
-  'Beat para estudiar o crear',
 ];
 
 function SocialCard({ link, index }) {
+  const isAnchor = link.href.startsWith('#');
+
   return (
     <a
       className="social-card"
       href={link.href}
-      target="_blank"
-      rel="noreferrer"
+      target={isAnchor ? undefined : '_blank'}
+      rel={isAnchor ? undefined : 'noreferrer'}
       style={{ '--accent': link.accent, '--delay': `${index * 90}ms` }}
     >
       <span className="social-icon">{link.icon}</span>
@@ -59,12 +55,14 @@ function SocialCard({ link, index }) {
 }
 
 function TopSocialLink({ link, index }) {
+  const isAnchor = link.href.startsWith('#');
+
   return (
     <a
       className="top-social-link"
       href={link.href}
-      target="_blank"
-      rel="noreferrer"
+      target={isAnchor ? undefined : '_blank'}
+      rel={isAnchor ? undefined : 'noreferrer'}
       style={{ '--accent': link.accent, '--delay': `${index * 80}ms` }}
     >
       <span>{link.icon}</span>
@@ -73,17 +71,33 @@ function TopSocialLink({ link, index }) {
   );
 }
 
+function SpiderLogo() {
+  return (
+    <div className="spider-logo" aria-hidden="true">
+      <span className="spider-glow" />
+      <span className="spider-body" />
+      <span className="spider-head" />
+      <span className="spider-leg leg-1" />
+      <span className="spider-leg leg-2" />
+      <span className="spider-leg leg-3" />
+      <span className="spider-leg leg-4" />
+      <span className="spider-leg leg-5" />
+      <span className="spider-leg leg-6" />
+      <span className="spider-leg leg-7" />
+      <span className="spider-leg leg-8" />
+    </div>
+  );
+}
+
 function App() {
   return (
     <main className="page-shell">
-      <div className="orb orb-one" />
-      <div className="orb orb-two" />
       <div className="grain" />
 
       <header className="topbar" id="redes">
         <a className="brand" href="/">
-          <span>Ariel</span>
-          <strong>Solano</strong>
+          <span>Mis</span>
+          <strong>Redes</strong>
         </a>
         <nav className="top-socials" aria-label="Redes sociales">
           {socialLinks.map((link, index) => (
@@ -92,68 +106,34 @@ function App() {
         </nav>
       </header>
 
-      <section className="hero">
-        <p className="eyebrow">Mi espacio digital + playlist</p>
-        <div className="hero-grid">
-          <div className="intro-card">
-            <span className="sparkle-tag">Soft mood, cute energy</span>
-            <h1>Hola, soy Ariel.</h1>
-            <p>
-              Este es mi espacio para compartir mis redes, mi musica favorita,
-              fotos, momentos y todo lo que me inspira.
-            </p>
-            <div className="cta-row">
-              <a className="primary-btn" href="#playlist">
-                Escuchar playlist
-              </a>
-              <a className="ghost-btn" href="#redes">
-                Ver redes
-              </a>
-            </div>
+      <section className="hero" id="inicio">
+        <div className="hero-panel">
+          <div className="hero-copy">
+            <p className="eyebrow">Acceso directo</p>
+            <h1>Redes</h1>
+            <p>Todo en un solo lugar.</p>
           </div>
-
-          <aside className="profile-card" aria-label="Foto de perfil">
-            <div className="photo-frame">
-              <img src={`${import.meta.env.BASE_URL}mi-foto.png`} alt="Foto de mi perfil" />
-            </div>
-            <div className="profile-caption">
-              <p>Digital diary</p>
-              <h2>Ariel Solano</h2>
-              <span>Fotos, musica, momentos y contenido nuevo.</span>
-            </div>
-            <div className="wave">
-              {Array.from({ length: 24 }).map((_, index) => (
-                <span key={index} style={{ '--i': index }} />
-              ))}
-            </div>
-          </aside>
-        </div>
-      </section>
-
-      <section className="content-grid">
-        <div className="panel socials-panel">
-          <div className="section-heading">
-            <p>Conectemos</p>
-            <h2>Redes sociales</h2>
-          </div>
-          <div className="social-list">
+          <SpiderLogo />
+          <div className="quick-links" aria-label="Accesos directos principales">
             {socialLinks.map((link, index) => (
               <SocialCard key={link.name} link={link} index={index} />
             ))}
           </div>
         </div>
+      </section>
 
+      <section className="content-grid">
         <div id="playlist" className="panel playlist-panel">
           <div className="section-heading">
             <p>Spotify</p>
-            <h2>Mi playlist favorita</h2>
+            <h2>Playlist</h2>
           </div>
           <div className="spotify-frame">
             <iframe
-              title="Playlist de Spotify"
+              title="Playlist secundaria de Spotify"
               src="https://open.spotify.com/embed/playlist/7LeW1x0C74XY6GWKX6IWym?utm_source=generator"
               width="100%"
-              height="420"
+              height="520"
               allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
               loading="lazy"
             />
