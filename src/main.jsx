@@ -106,17 +106,17 @@ function RevealPortrait() {
 
       const now = performance.now();
 
-      if (isTouchLike && !isActiveRef.current && now - lastAutoDropRef.current > 360) {
+      if (isTouchLike && !isActiveRef.current && now - lastAutoDropRef.current > 220) {
         const time = now / 1000;
         dropsRef.current.push({
-          x: 56 + Math.sin(time * 0.72) * 11,
-          y: 42 + Math.cos(time * 0.58) * 7,
-          life: 0.72,
-          rx: 24,
-          ry: 34,
-          decay: 0.012,
+          x: 56 + Math.sin(time * 0.58) * 9,
+          y: 42 + Math.cos(time * 0.5) * 6,
+          life: 0.78,
+          rx: 22,
+          ry: 32,
+          decay: 0.0095,
         });
-        dropsRef.current = dropsRef.current.slice(-6);
+        dropsRef.current = dropsRef.current.slice(-8);
         lastAutoDropRef.current = now;
       }
 
@@ -186,6 +186,7 @@ function RevealPortrait() {
 
   function resetReveal(event) {
     isActiveRef.current = false;
+    lastAutoDropRef.current = performance.now() + 180;
     targetRef.current = { x: 50, y: 44 };
     event.currentTarget.classList.remove('is-revealing');
   }
