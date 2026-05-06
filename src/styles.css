@@ -295,8 +295,8 @@ h1 {
   position: relative;
   align-self: center;
   justify-self: center;
-  width: 176px;
-  height: 176px;
+  width: clamp(128px, 16vw, 176px);
+  aspect-ratio: 1;
   border: 1px solid rgba(239, 68, 68, 0.26);
   border-radius: 50%;
   background:
@@ -308,7 +308,7 @@ h1 {
 
 .spider-glow {
   position: absolute;
-  inset: 20px;
+  inset: 11%;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(239, 68, 68, 0.45), transparent 62%);
   filter: blur(10px);
@@ -325,25 +325,25 @@ h1 {
 }
 
 .spider-body {
-  top: 58px;
-  width: 34px;
-  height: 68px;
+  top: 33%;
+  width: 19%;
+  height: 38%;
   border-radius: 50% 50% 42% 42%;
 }
 
 .spider-head {
-  top: 38px;
-  width: 26px;
-  height: 26px;
+  top: 22%;
+  width: 15%;
+  height: 15%;
   border-radius: 50%;
 }
 
 .spider-leg {
   position: absolute;
   left: 50%;
-  top: 78px;
-  width: 76px;
-  height: 6px;
+  top: 44%;
+  width: 43%;
+  height: 3.5%;
   border-radius: 999px;
   background: #e5edf8;
   transform-origin: 0 50%;
@@ -465,15 +465,15 @@ h1 {
   .hero-panel {
     grid-template-columns: 1fr;
     min-height: auto;
+    gap: 16px;
   }
 
   .spider-logo {
-    width: 142px;
-    height: 142px;
     order: 2;
   }
 
   .quick-links {
+    order: 3;
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -500,30 +500,40 @@ h1 {
 
 @media (max-width: 560px) {
   .page-shell {
-    padding: 14px;
+    padding: 12px;
   }
 
   .hero-panel,
   .panel {
-    border-radius: 24px;
-    padding: 20px;
+    border-radius: 20px;
+    padding: 16px;
   }
 
   h1 {
-    font-size: 4.4rem;
+    font-size: clamp(3.2rem, 18vw, 4.4rem);
+  }
+
+  .top-socials {
+    display: none;
+  }
+
+  .topbar {
+    margin-bottom: 12px;
   }
 
   .quick-links {
     grid-template-columns: 1fr;
+    gap: 10px;
   }
 
   .social-card {
-    min-height: 140px;
+    min-height: 112px;
+    padding: 14px;
   }
 
   .spider-logo {
-    width: 124px;
-    height: 124px;
+    width: 112px;
+    margin: -4px auto 2px;
   }
 
   .spotify-frame,
