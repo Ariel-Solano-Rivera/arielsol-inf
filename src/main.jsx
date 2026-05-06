@@ -84,6 +84,7 @@ function RevealPortrait() {
   const isActiveRef = useRef(false);
   const lastDropRef = useRef({ x: 50, y: 44 });
   const dropIdRef = useRef(0);
+  const lastAutoDropRef = useRef(0);
 
   useEffect(() => {
     function animate() {
@@ -103,6 +104,22 @@ function RevealPortrait() {
         .map((drop) => ({ ...drop, life: drop.life - drop.decay }))
         .filter((drop) => drop.life > 0);
 
+      const now = performance.now();
+
+      if (isTouchLike && !isActiveRef.current && now - lastAutoDropRef.current > 360) {
+        const time = now / 1000;
+        dropsRef.current.push({
+          x: 56 + Math.sin(time * 0.72) * 11,
+          y: 42 + Math.cos(time * 0.58) * 7,
+          life: 0.72,
+          rx: 24,
+          ry: 34,
+          decay: 0.012,
+        });
+        dropsRef.current = dropsRef.current.slice(-6);
+        lastAutoDropRef.current = now;
+      }
+
       const maskImage = dropsRef.current
         .map((drop) => {
           const rx = Math.max(16, drop.rx * drop.life);
@@ -115,10 +132,7 @@ function RevealPortrait() {
         .join(', ');
 
       if (mask && trail) {
-        const shouldUseCssFallback = !maskImage && window.matchMedia('(hover: none)').matches;
-        const value = shouldUseCssFallback
-          ? ''
-          : maskImage || 'radial-gradient(circle at 50% 44%, transparent 0, transparent 1px)';
+        const value = maskImage || 'radial-gradient(circle at 50% 44%, transparent 0, transparent 1px)';
 
         mask.style.maskImage = value;
         mask.style.webkitMaskImage = value;

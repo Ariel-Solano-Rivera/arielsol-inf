@@ -903,13 +903,13 @@ h1 {
   }
 
   .portrait-mask {
-    opacity: 0;
+    opacity: 0.82;
     transform: scale(1.018);
     filter: saturate(1.16) contrast(1.06);
   }
 
   .reveal-portrait.is-revealing .portrait-mask {
-    opacity: 0.96;
+    opacity: 0.94;
   }
 
   .reveal-portrait.is-revealing .reveal-liquid {
@@ -923,7 +923,23 @@ h1 {
   }
 
   .scroll-cue {
-    display: none;
+    display: grid;
+    min-width: 52px;
+    width: 52px;
+    min-height: 52px;
+    padding: 0;
+    border-radius: 50%;
+    color: transparent;
+    font-size: 0;
+  }
+
+  .scroll-cue::before {
+    content: "";
+    width: 14px;
+    height: 14px;
+    border-right: 3px solid #f8fafc;
+    border-bottom: 3px solid #f8fafc;
+    transform: translateY(-3px) rotate(45deg);
   }
 
   .reveal-ring {
