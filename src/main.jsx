@@ -159,12 +159,12 @@ function RevealPortrait() {
         x: next.x + wave * 0.9,
         y: next.y + drift * 0.6,
         life: 1,
-        rx: touchLike ? 34 + wave * 7 : 78 + wave * 20,
-        ry: touchLike ? 48 + drift * 9 : 92 + drift * 22,
-        decay: 0.010 + (id % 4) * 0.0016,
+        rx: touchLike ? 22 + wave * 5 : 78 + wave * 20,
+        ry: touchLike ? 30 + drift * 7 : 92 + drift * 22,
+        decay: touchLike ? 0.018 + (id % 4) * 0.002 : 0.010 + (id % 4) * 0.0016,
       });
 
-      dropsRef.current = dropsRef.current.slice(touchLike ? -16 : -30);
+      dropsRef.current = dropsRef.current.slice(touchLike ? -10 : -30);
       lastDropRef.current = next;
       dropIdRef.current += 1;
     }
@@ -212,14 +212,8 @@ function RevealPortrait() {
       onTouchEnd={resetReveal}
       onTouchCancel={resetReveal}
     >
-      <div className="portrait-card">
-        <div className="portrait-face portrait-front">
-          <img className="portrait-base" src={profilePhoto} alt="Foto de perfil" />
-        </div>
-        <div className="portrait-face portrait-back">
-          <img ref={maskRef} className="portrait-mask" src={maskPhoto} alt="" aria-hidden="true" />
-        </div>
-      </div>
+      <img className="portrait-base" src={profilePhoto} alt="Foto de perfil" />
+      <img ref={maskRef} className="portrait-mask" src={maskPhoto} alt="" aria-hidden="true" />
       <span ref={trailRef} className="reveal-liquid" />
       <span className="reveal-ring" />
     </div>

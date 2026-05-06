@@ -377,8 +377,8 @@ h1 {
   -webkit-user-select: none;
 }
 
-.portrait-card,
-.portrait-face,
+.portrait-base,
+.portrait-mask,
 .reveal-liquid {
   position: absolute;
   inset: 0;
@@ -391,27 +391,7 @@ h1 {
 
 .portrait-base,
 .portrait-mask {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  user-select: none;
-  -webkit-user-drag: none;
-  -webkit-touch-callout: none;
-}
-
-.portrait-base,
-.portrait-mask {
   object-fit: cover;
-}
-
-.portrait-card,
-.portrait-face {
-  transform-style: preserve-3d;
-}
-
-.portrait-back {
-  transform: none;
 }
 
 .portrait-base {
@@ -920,47 +900,30 @@ h1 {
     width: min(285px, 78vw);
     margin: -2px auto 0;
     cursor: default;
-    perspective: 1000px;
-  }
-
-  .portrait-card {
-    transition: transform 620ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .portrait-face {
-    overflow: hidden;
-    border-radius: inherit;
-    backface-visibility: hidden;
-  }
-
-  .portrait-front {
-    transform: rotateY(0deg);
-  }
-
-  .portrait-back {
-    transform: rotateY(180deg);
-  }
-
-  .reveal-portrait:active .portrait-card,
-  .reveal-portrait.is-revealing .portrait-card {
-    transform: rotateY(180deg);
   }
 
   .portrait-mask {
-    opacity: 1;
-    transform: none;
-    filter: saturate(1.08) contrast(1.04);
-    mask-image: none !important;
-    -webkit-mask-image: none !important;
+    opacity: 0;
+    transform: scale(1.018);
+    filter: saturate(1.16) contrast(1.06);
   }
 
   .reveal-portrait.is-revealing .portrait-mask {
-    opacity: 1;
+    opacity: 0.96;
   }
 
-  .reveal-portrait.is-revealing .reveal-liquid,
+  .reveal-portrait.is-revealing .reveal-liquid {
+    opacity: 0.12;
+  }
+
   .reveal-portrait.is-revealing .reveal-ring {
-    opacity: 0;
+    opacity: 0.1;
+    width: 92px;
+    height: 78px;
+  }
+
+  .scroll-cue {
+    display: none;
   }
 
   .reveal-ring {
