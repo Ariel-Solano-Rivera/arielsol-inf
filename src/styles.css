@@ -22,7 +22,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-snap-type: y proximity;
+  scroll-snap-type: y mandatory;
 }
 
 body {
@@ -86,14 +86,17 @@ a {
 }
 
 .topbar {
-  position: sticky;
-  top: 18px;
+  position: absolute;
+  top: 22px;
+  left: 34px;
+  right: 34px;
   z-index: 10;
   display: flex;
   gap: 18px;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 18px;
+  width: auto;
+  margin: 0 auto 18px;
   padding: 10px;
   border: 1px solid var(--line);
   border-radius: 999px;
@@ -161,9 +164,9 @@ a {
 .hero-stage {
   position: relative;
   display: grid;
-  min-height: calc(100vh - 104px);
+  min-height: calc(100vh - 44px);
   place-items: center;
-  padding: clamp(18px, 4vw, 48px) 0 64px;
+  padding: 82px 0 64px;
   animation: reveal 750ms 80ms both;
 }
 
@@ -290,7 +293,7 @@ h1 {
   --reveal-x: 50%;
   --reveal-y: 44%;
   position: relative;
-  width: min(460px, 66vw);
+  width: min(430px, 62vw);
   aspect-ratio: 4 / 5;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.12);
@@ -420,7 +423,7 @@ h1 {
   min-height: 100vh;
   display: grid;
   align-items: center;
-  padding: 56px 0 34px;
+  padding: 72px 0 34px;
 }
 
 .links-panel {
@@ -437,7 +440,7 @@ h1 {
   display: grid;
   gap: 18px;
   min-height: auto;
-  padding: clamp(18px, 3vw, 28px);
+  padding: clamp(18px, 2.5vw, 24px);
   border: 1px solid var(--line);
   border-radius: 26px;
   background: var(--panel);
@@ -471,7 +474,7 @@ h1 {
 .section-heading h2 {
   margin-bottom: 16px;
   color: #f8fafc;
-  font-size: clamp(2.35rem, 5vw, 4.4rem);
+  font-size: clamp(2.2rem, 4vw, 3.7rem);
   font-weight: 800;
   letter-spacing: -0.075em;
   line-height: 0.9;
@@ -479,7 +482,7 @@ h1 {
 
 .spotify-frame {
   overflow: hidden;
-  min-height: 430px;
+  min-height: 390px;
   border: 8px solid rgba(226, 232, 240, 0.1);
   border-radius: 22px;
   background: #10141f;
@@ -488,7 +491,7 @@ h1 {
 
 .spotify-frame iframe {
   display: block;
-  height: 430px;
+  height: 390px;
   border: 0;
 }
 
@@ -649,12 +652,18 @@ h1 {
     padding: 18px;
   }
 
+  .topbar {
+    left: 18px;
+    right: 18px;
+  }
+
   .hero-stage {
-    min-height: calc(100vh - 94px);
+    min-height: calc(100vh - 36px);
+    padding: 76px 0 58px;
   }
 
   .reveal-portrait {
-    width: min(390px, 76vw);
+    width: min(360px, 74vw);
   }
 
   .quick-links {
@@ -677,11 +686,13 @@ h1 {
 
 @media (max-width: 720px) {
   .topbar {
-    position: relative;
-    top: 0;
+    top: 14px;
     flex-direction: column;
     align-items: flex-start;
     border-radius: 24px;
+    left: 14px;
+    right: 14px;
+    width: auto;
   }
 
   .top-socials {
@@ -704,14 +715,19 @@ h1 {
     padding: 12px;
   }
 
+  .topbar {
+    left: 12px;
+    right: 12px;
+  }
+
   .hero-stage,
   .panel {
     border-radius: 20px;
   }
 
   .hero-stage {
-    min-height: calc(100vh - 82px);
-    padding: 8px 0 56px;
+    min-height: calc(100vh - 24px);
+    padding: 72px 0 52px;
   }
 
   h1 {
@@ -724,6 +740,7 @@ h1 {
 
   .topbar {
     margin-bottom: 12px;
+    padding: 9px;
   }
 
   .quick-links {
@@ -733,7 +750,8 @@ h1 {
 
   .links-block {
     min-height: auto;
-    padding: 58px 0 28px;
+    scroll-snap-align: start;
+    padding: 58px 0 24px;
   }
 
   .links-panel {
@@ -746,14 +764,14 @@ h1 {
   }
 
   .social-card {
-    min-height: 112px;
-    padding: 14px;
+    min-height: 96px;
+    padding: 13px;
   }
 
   .reveal-portrait {
     --reveal-x: 58%;
     --reveal-y: 42%;
-    width: min(280px, 78vw);
+    width: min(250px, 72vw);
     margin: -2px auto 0;
     cursor: default;
   }
@@ -770,7 +788,7 @@ h1 {
 
   .spotify-frame,
   .spotify-frame iframe {
-    min-height: 390px;
-    height: 390px;
+    min-height: 340px;
+    height: 340px;
   }
 }
