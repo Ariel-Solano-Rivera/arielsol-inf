@@ -371,6 +371,7 @@ h1 {
     rgba(8, 10, 16, 0.5);
   box-shadow: 0 26px 74px rgba(0, 0, 0, 0.32);
   cursor: none;
+  touch-action: none;
 }
 
 .portrait-base,
@@ -869,10 +870,7 @@ h1 {
   }
 
   .portrait-mask {
-    opacity: 1;
-    animation: mobile-mask-flow 4.8s ease-in-out infinite;
-    mask-image: radial-gradient(ellipse 118px 152px at var(--reveal-x) var(--reveal-y), #000 0 74px, rgba(0,0,0,.6) 108px, transparent 154px);
-    -webkit-mask-image: radial-gradient(ellipse 118px 152px at var(--reveal-x) var(--reveal-y), #000 0 74px, rgba(0,0,0,.6) 108px, transparent 154px);
+    opacity: 0;
   }
 
   .reveal-ring {
@@ -881,18 +879,12 @@ h1 {
 
   .spotify-frame,
   .spotify-frame iframe {
-    min-height: 340px;
-    height: 340px;
+    min-height: 470px;
+    height: 470px;
   }
-}
 
-@keyframes mobile-mask-flow {
-  0%,
-  100% {
-    clip-path: inset(0);
-    transform: scale(1.018);
-  }
-  50% {
-    transform: scale(1.035);
+  .spotify-frame {
+    border-width: 5px;
+    border-radius: 18px;
   }
 }

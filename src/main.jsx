@@ -92,14 +92,6 @@ function RevealPortrait() {
       const trail = trailRef.current;
       const isTouchLike = window.matchMedia('(hover: none)').matches;
 
-      if (isTouchLike && !isActiveRef.current) {
-        const time = performance.now() / 1000;
-        targetRef.current = {
-          x: 55 + Math.sin(time * 0.75) * 10,
-          y: 42 + Math.cos(time * 0.62) * 7,
-        };
-      }
-
       if (portrait) {
         currentRef.current.x += (targetRef.current.x - currentRef.current.x) * 0.16;
         currentRef.current.y += (targetRef.current.y - currentRef.current.y) * 0.16;
@@ -143,8 +135,6 @@ function RevealPortrait() {
   }, []);
 
   function updateReveal(event) {
-    if (window.matchMedia('(hover: none)').matches) return;
-
     const bounds = event.currentTarget.getBoundingClientRect();
     const next = {
       x: ((event.clientX - bounds.left) / bounds.width) * 100,
@@ -179,8 +169,6 @@ function RevealPortrait() {
   }
 
   function resetReveal(event) {
-    if (window.matchMedia('(hover: none)').matches) return;
-
     isActiveRef.current = false;
     targetRef.current = { x: 50, y: 44 };
     event.currentTarget.classList.remove('is-revealing');
@@ -197,7 +185,14 @@ function RevealPortrait() {
         event.currentTarget.classList.add('is-revealing');
         updateReveal(event);
       }}
+      onPointerDown={(event) => {
+        isActiveRef.current = true;
+        event.currentTarget.classList.add('is-revealing');
+        event.currentTarget.setPointerCapture?.(event.pointerId);
+        updateReveal(event);
+      }}
       onPointerMove={updateReveal}
+      onPointerUp={resetReveal}
       onPointerCancel={resetReveal}
       onPointerLeave={resetReveal}
     >
