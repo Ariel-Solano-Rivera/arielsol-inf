@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
+import profilePhoto from '../mi-foto.png';
+import maskPhoto from './assets/sp1.png';
 
 const socialLinks = [
   {
@@ -71,20 +73,122 @@ function TopSocialLink({ link, index }) {
   );
 }
 
-function SpiderLogo() {
+function RevealPortrait() {
+  const portraitRef = useRef(null);
+  const maskRef = useRef(null);
+  const trailRef = useRef(null);
+  const frameRef = useRef(null);
+  const targetRef = useRef({ x: 50, y: 44 });
+  const currentRef = useRef({ x: 50, y: 44 });
+  const dropsRef = useRef([]);
+  const isActiveRef = useRef(false);
+  const lastDropRef = useRef({ x: 50, y: 44 });
+  const dropIdRef = useRef(0);
+
+  useEffect(() => {
+    function animate() {
+      const portrait = portraitRef.current;
+      const mask = maskRef.current;
+      const trail = trailRef.current;
+
+      if (portrait) {
+        currentRef.current.x += (targetRef.current.x - currentRef.current.x) * 0.16;
+        currentRef.current.y += (targetRef.current.y - currentRef.current.y) * 0.16;
+        portrait.style.setProperty('--reveal-x', `${currentRef.current.x}%`);
+        portrait.style.setProperty('--reveal-y', `${currentRef.current.y}%`);
+      }
+
+      dropsRef.current = dropsRef.current
+        .map((drop) => ({ ...drop, life: drop.life - drop.decay }))
+        .filter((drop) => drop.life > 0);
+
+      const maskImage = dropsRef.current
+        .map((drop) => {
+          const rx = Math.max(16, drop.rx * drop.life);
+          const ry = Math.max(18, drop.ry * drop.life);
+          const softX = rx + 42;
+          const softY = ry + 42;
+
+          return `radial-gradient(ellipse ${softX}px ${softY}px at ${drop.x}% ${drop.y}%, #000 0 ${Math.min(rx, ry)}px, rgba(0,0,0,.72) ${Math.min(rx, ry) + 18}px, rgba(0,0,0,.28) ${Math.min(softX, softY) - 14}px, transparent ${Math.min(softX, softY)}px)`;
+        })
+        .join(', ');
+
+      if (mask && trail) {
+        const shouldUseCssFallback = !maskImage && window.matchMedia('(hover: none)').matches;
+        const value = shouldUseCssFallback
+          ? ''
+          : maskImage || 'radial-gradient(circle at 50% 44%, transparent 0, transparent 1px)';
+
+        mask.style.maskImage = value;
+        mask.style.webkitMaskImage = value;
+        trail.style.maskImage = value;
+        trail.style.webkitMaskImage = value;
+      }
+
+      frameRef.current = requestAnimationFrame(animate);
+    }
+
+    frameRef.current = requestAnimationFrame(animate);
+
+    return () => cancelAnimationFrame(frameRef.current);
+  }, []);
+
+  function updateReveal(event) {
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const next = {
+      x: ((event.clientX - bounds.left) / bounds.width) * 100,
+      y: ((event.clientY - bounds.top) / bounds.height) * 100,
+    };
+
+    targetRef.current = next;
+
+    const distance = Math.hypot(
+      next.x - lastDropRef.current.x,
+      next.y - lastDropRef.current.y,
+    );
+
+    if (distance > 1.15 || dropsRef.current.length === 0) {
+      const id = dropIdRef.current;
+      const wave = Math.sin(id * 1.37);
+      const drift = Math.cos(id * 0.91);
+
+      dropsRef.current.push({
+        x: next.x + wave * 0.9,
+        y: next.y + drift * 0.6,
+        life: 1,
+        rx: 78 + wave * 20,
+        ry: 92 + drift * 22,
+        decay: 0.010 + (id % 4) * 0.0016,
+      });
+
+      dropsRef.current = dropsRef.current.slice(-30);
+      lastDropRef.current = next;
+      dropIdRef.current += 1;
+    }
+  }
+
+  function resetReveal(event) {
+    isActiveRef.current = false;
+    targetRef.current = { x: 50, y: 44 };
+    event.currentTarget.classList.remove('is-revealing');
+  }
+
   return (
-    <div className="spider-logo" aria-hidden="true">
-      <span className="spider-glow" />
-      <span className="spider-body" />
-      <span className="spider-head" />
-      <span className="spider-leg leg-1" />
-      <span className="spider-leg leg-2" />
-      <span className="spider-leg leg-3" />
-      <span className="spider-leg leg-4" />
-      <span className="spider-leg leg-5" />
-      <span className="spider-leg leg-6" />
-      <span className="spider-leg leg-7" />
-      <span className="spider-leg leg-8" />
+    <div
+      ref={portraitRef}
+      className="reveal-portrait"
+      onPointerEnter={(event) => {
+        isActiveRef.current = true;
+        event.currentTarget.classList.add('is-revealing');
+        updateReveal(event);
+      }}
+      onPointerMove={updateReveal}
+      onPointerLeave={resetReveal}
+    >
+      <img className="portrait-base" src={profilePhoto} alt="Foto de perfil" />
+      <img ref={maskRef} className="portrait-mask" src={maskPhoto} alt="" aria-hidden="true" />
+      <span ref={trailRef} className="reveal-liquid" />
+      <span className="reveal-ring" />
     </div>
   );
 }
@@ -106,37 +210,57 @@ function App() {
         </nav>
       </header>
 
-      <section className="hero" id="inicio">
-        <div className="hero-panel">
-          <div className="hero-copy">
-            <p className="eyebrow">Acceso directo</p>
-            <h1>Redes</h1>
-            <p>Todo en un solo lugar.</p>
-          </div>
-          <SpiderLogo />
-          <div className="quick-links" aria-label="Accesos directos principales">
-            {socialLinks.map((link, index) => (
-              <SocialCard key={link.name} link={link} index={index} />
-            ))}
-          </div>
+      <section className="hero snap-section" id="inicio">
+        <div className="hero-stage">
+          <RevealPortrait />
+          <a className="scroll-cue" href="#redes-principales">
+            Ver redes
+          </a>
         </div>
       </section>
 
-      <section className="content-grid">
-        <div id="playlist" className="panel playlist-panel">
-          <div className="section-heading">
-            <p>Spotify</p>
-            <h2>Playlist</h2>
+      <section className="links-block snap-section" id="redes-principales">
+        <div className="web-pull" aria-hidden="true">
+          <span className="web-thread web-thread-one" />
+          <span className="web-thread web-thread-two" />
+          <span className="web-thread web-thread-three" />
+          <span className="web-thread web-thread-four" />
+          <span className="web-thread web-thread-five" />
+          <span className="web-arc web-arc-one" />
+          <span className="web-arc web-arc-two" />
+          <span className="web-arc web-arc-three" />
+          <span className="web-knot" />
+        </div>
+        <div className="links-panel">
+          <div className="social-section">
+            <div className="section-heading">
+              <p>Acceso directo</p>
+              <h1>Mis redes</h1>
+            </div>
+            <div className="quick-links" aria-label="Accesos directos principales">
+              {socialLinks.map((link, index) => (
+                <SocialCard key={link.name} link={link} index={index} />
+              ))}
+            </div>
           </div>
-          <div className="spotify-frame">
-            <iframe
-              title="Playlist secundaria de Spotify"
-              src="https://open.spotify.com/embed/playlist/7LeW1x0C74XY6GWKX6IWym?utm_source=generator"
-              width="100%"
-              height="520"
-              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-              loading="lazy"
-            />
+
+          <div className="content-grid">
+            <div id="playlist" className="panel playlist-panel">
+              <div className="section-heading">
+                <p>Spotify</p>
+                <h2>Playlist</h2>
+              </div>
+              <div className="spotify-frame">
+                <iframe
+                  title="Playlist secundaria de Spotify"
+                  src="https://open.spotify.com/embed/playlist/7LeW1x0C74XY6GWKX6IWym?utm_source=generator"
+                  width="100%"
+                  height="520"
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                  loading="lazy"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </section>
