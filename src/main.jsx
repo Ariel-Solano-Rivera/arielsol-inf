@@ -114,7 +114,7 @@ function App() {
 
           <aside className="profile-card" aria-label="Foto de perfil">
             <div className="photo-frame">
-              <img src="/mi-foto.png" alt="Foto de mi perfil" />
+              <img src={`${import.meta.env.BASE_URL}mi-foto.png`} alt="Foto de mi perfil" />
             </div>
             <div className="profile-caption">
               <p>Digital diary</p>
