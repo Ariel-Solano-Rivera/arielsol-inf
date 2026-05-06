@@ -143,6 +143,8 @@ function RevealPortrait() {
   }, []);
 
   function updateReveal(event) {
+    if (window.matchMedia('(hover: none)').matches) return;
+
     const bounds = event.currentTarget.getBoundingClientRect();
     const next = {
       x: ((event.clientX - bounds.left) / bounds.width) * 100,
@@ -177,6 +179,8 @@ function RevealPortrait() {
   }
 
   function resetReveal(event) {
+    if (window.matchMedia('(hover: none)').matches) return;
+
     isActiveRef.current = false;
     targetRef.current = { x: 50, y: 44 };
     event.currentTarget.classList.remove('is-revealing');
@@ -187,17 +191,13 @@ function RevealPortrait() {
       ref={portraitRef}
       className="reveal-portrait"
       onPointerEnter={(event) => {
-        isActiveRef.current = true;
-        event.currentTarget.classList.add('is-revealing');
-        updateReveal(event);
-      }}
-      onPointerDown={(event) => {
+        if (window.matchMedia('(hover: none)').matches) return;
+
         isActiveRef.current = true;
         event.currentTarget.classList.add('is-revealing');
         updateReveal(event);
       }}
       onPointerMove={updateReveal}
-      onPointerUp={resetReveal}
       onPointerCancel={resetReveal}
       onPointerLeave={resetReveal}
     >
@@ -231,7 +231,7 @@ function App() {
           <div className="hero-intro">
             <p className="hero-kicker">Personal social hub</p>
             <h1>Ariel Solano</h1>
-            <span className="hero-signature">A. Solano</span>
+            <span className="hero-signature">Solff</span>
           </div>
           <RevealPortrait />
           <a className="scroll-cue" href="#redes-principales">

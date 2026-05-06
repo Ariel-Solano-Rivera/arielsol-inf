@@ -164,10 +164,11 @@ a {
 .hero-stage {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 0.92fr) minmax(280px, 430px);
-  gap: clamp(24px, 6vw, 78px);
+  grid-template-columns: minmax(360px, 0.72fr) minmax(300px, 410px);
+  gap: clamp(18px, 3vw, 42px);
   min-height: calc(100vh - 44px);
   align-items: center;
+  justify-content: center;
   padding: 82px 0 64px;
   animation: reveal 750ms 80ms both;
 }
@@ -195,8 +196,8 @@ a {
 }
 
 .hero-intro {
-  justify-self: start;
-  max-width: 560px;
+  justify-self: end;
+  max-width: 470px;
 }
 
 .hero-kicker {
@@ -215,10 +216,10 @@ p {
 }
 
 h1 {
-  max-width: 660px;
+  max-width: 560px;
   margin-bottom: 12px;
   color: #f8fafc;
-  font-size: clamp(4.2rem, 8.5vw, 8.6rem);
+  font-size: clamp(4rem, 7.2vw, 7.4rem);
   font-weight: 800;
   letter-spacing: -0.08em;
   line-height: 0.86;
@@ -232,15 +233,46 @@ h1 {
 }
 
 .hero-signature {
+  position: relative;
   display: block;
   width: fit-content;
-  margin-top: 18px;
-  color: #f472b6;
+  margin-top: 10px;
+  color: #9f8cff;
   font-family: Allura, "Brush Script MT", cursive;
-  font-size: clamp(2.8rem, 6vw, 5.4rem);
+  font-size: clamp(3.4rem, 5.6vw, 5.3rem);
   line-height: 0.9;
-  text-shadow: 0 0 28px rgba(244, 114, 182, 0.22);
-  transform: rotate(-4deg);
+  text-shadow: 0 0 22px rgba(159, 140, 255, 0.24);
+  transform: rotate(-5deg);
+}
+
+.hero-signature::before {
+  content: "";
+  position: absolute;
+  left: -0.48em;
+  right: -0.36em;
+  bottom: 0.12em;
+  height: 0.08em;
+  border-radius: 999px;
+  background: currentColor;
+  opacity: 0.78;
+  transform: rotate(-7deg);
+  transform-origin: left center;
+  filter: blur(0.2px);
+}
+
+.hero-signature::after {
+  content: "";
+  position: absolute;
+  right: -0.35em;
+  top: 0.04em;
+  width: 0.76em;
+  height: 0.58em;
+  border: 0.07em solid currentColor;
+  border-left: 0;
+  border-bottom: 0;
+  border-radius: 50%;
+  opacity: 0.72;
+  transform: rotate(14deg);
 }
 
 .quick-links {
@@ -328,8 +360,8 @@ h1 {
   --reveal-x: 50%;
   --reveal-y: 44%;
   position: relative;
-  width: min(430px, 62vw);
-  justify-self: end;
+  width: min(390px, 58vw);
+  justify-self: start;
   aspect-ratio: 4 / 5;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.12);
@@ -703,6 +735,7 @@ h1 {
 
   .hero-intro {
     justify-self: center;
+    max-width: 560px;
   }
 
   .hero-signature {
@@ -791,7 +824,7 @@ h1 {
 
   .hero-signature {
     margin-top: 10px;
-    font-size: clamp(2.2rem, 12vw, 3.6rem);
+    font-size: clamp(3rem, 16vw, 4.6rem);
   }
 
   .top-socials {
@@ -811,7 +844,7 @@ h1 {
   .links-block {
     min-height: auto;
     scroll-snap-align: start;
-    padding: 58px 0 24px;
+    padding: 24px 0 24px;
   }
 
   .links-panel {
@@ -819,8 +852,7 @@ h1 {
   }
 
   .web-pull {
-    top: -20px;
-    transform: translateX(-50%) scale(0.62);
+    display: none;
   }
 
   .social-card {
