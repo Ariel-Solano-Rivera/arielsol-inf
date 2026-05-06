@@ -212,8 +212,14 @@ function RevealPortrait() {
       onTouchEnd={resetReveal}
       onTouchCancel={resetReveal}
     >
-      <img className="portrait-base" src={profilePhoto} alt="Foto de perfil" />
-      <img ref={maskRef} className="portrait-mask" src={maskPhoto} alt="" aria-hidden="true" />
+      <div className="portrait-card">
+        <div className="portrait-face portrait-front">
+          <img className="portrait-base" src={profilePhoto} alt="Foto de perfil" />
+        </div>
+        <div className="portrait-face portrait-back">
+          <img ref={maskRef} className="portrait-mask" src={maskPhoto} alt="" aria-hidden="true" />
+        </div>
+      </div>
       <span ref={trailRef} className="reveal-liquid" />
       <span className="reveal-ring" />
     </div>
@@ -221,6 +227,14 @@ function RevealPortrait() {
 }
 
 function App() {
+  function scrollToLinks(event) {
+    event.preventDefault();
+    document.getElementById('redes-principales')?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+  }
+
   return (
     <main className="page-shell">
       <div className="grain" />
@@ -245,7 +259,7 @@ function App() {
             <span className="hero-signature">Solff</span>
           </div>
           <RevealPortrait />
-          <a className="scroll-cue" href="#redes-principales">
+          <a className="scroll-cue" href="#redes-principales" onClick={scrollToLinks}>
             Ver redes
           </a>
         </div>

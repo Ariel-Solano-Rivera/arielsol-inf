@@ -377,8 +377,8 @@ h1 {
   -webkit-user-select: none;
 }
 
-.portrait-base,
-.portrait-mask,
+.portrait-card,
+.portrait-face,
 .reveal-liquid {
   position: absolute;
   inset: 0;
@@ -391,7 +391,27 @@ h1 {
 
 .portrait-base,
 .portrait-mask {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+}
+
+.portrait-base,
+.portrait-mask {
   object-fit: cover;
+}
+
+.portrait-card,
+.portrait-face {
+  transform-style: preserve-3d;
+}
+
+.portrait-back {
+  transform: none;
 }
 
 .portrait-base {
@@ -475,6 +495,7 @@ h1 {
   position: absolute;
   bottom: 18px;
   left: 50%;
+  z-index: 6;
   display: inline-flex;
   min-height: 42px;
   align-items: center;
@@ -491,6 +512,7 @@ h1 {
   transform: translateX(-50%);
   backdrop-filter: blur(18px);
   animation: cue-bounce 1.8s ease-in-out infinite;
+  touch-action: manipulation;
 }
 
 .links-block {
@@ -722,6 +744,21 @@ h1 {
   }
 }
 
+@keyframes mobile-jump-in {
+  0% {
+    opacity: 0;
+    transform: translateY(78px) scale(0.96);
+  }
+  58% {
+    opacity: 1;
+    transform: translateY(-12px) scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 @media (max-width: 920px) {
   .page-shell {
     padding: 18px;
@@ -797,7 +834,7 @@ h1 {
 
 @media (max-width: 560px) {
   html {
-    scroll-snap-type: y proximity;
+    scroll-snap-type: y mandatory;
   }
 
   .page-shell {
@@ -817,7 +854,7 @@ h1 {
   .hero-stage {
     min-height: calc(100vh - 24px);
     gap: 14px;
-    padding: 74px 0 52px;
+    padding: 74px 0 70px;
   }
 
   h1 {
@@ -849,17 +886,27 @@ h1 {
   }
 
   .links-block {
-    min-height: auto;
+    min-height: 100vh;
     scroll-snap-align: start;
-    padding: 24px 0 24px;
+    padding: 44px 0 24px;
   }
 
   .links-panel {
+    animation: mobile-jump-in both;
+    animation-timeline: view();
     animation-range: entry 4% cover 22%;
   }
 
   .web-pull {
     display: none;
+  }
+
+  .scroll-cue {
+    bottom: 14px;
+    min-width: 168px;
+    min-height: 52px;
+    padding: 0 24px;
+    font-size: 0.9rem;
   }
 
   .social-card {
@@ -873,19 +920,47 @@ h1 {
     width: min(285px, 78vw);
     margin: -2px auto 0;
     cursor: default;
+    perspective: 1000px;
+  }
+
+  .portrait-card {
+    transition: transform 620ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .portrait-face {
+    overflow: hidden;
+    border-radius: inherit;
+    backface-visibility: hidden;
+  }
+
+  .portrait-front {
+    transform: rotateY(0deg);
+  }
+
+  .portrait-back {
+    transform: rotateY(180deg);
+  }
+
+  .reveal-portrait:active .portrait-card,
+  .reveal-portrait.is-revealing .portrait-card {
+    transform: rotateY(180deg);
   }
 
   .portrait-mask {
-    opacity: 0;
+    opacity: 1;
+    transform: none;
+    filter: saturate(1.08) contrast(1.04);
+    mask-image: none !important;
+    -webkit-mask-image: none !important;
   }
 
   .reveal-portrait.is-revealing .portrait-mask {
-    opacity: 0.92;
+    opacity: 1;
   }
 
   .reveal-portrait.is-revealing .reveal-liquid,
   .reveal-portrait.is-revealing .reveal-ring {
-    opacity: 0.14;
+    opacity: 0;
   }
 
   .reveal-ring {
